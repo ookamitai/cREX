@@ -1,0 +1,2 @@
+tip=I:\UTAU\Resamplers\tips.exe
+mores=I:\UTAU\Resamplers\moresampler0.8.4.exe
