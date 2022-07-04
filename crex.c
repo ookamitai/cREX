@@ -5,6 +5,17 @@
 
 #define MAX_BUF 4095
 
+char *strremove(char *str, const char *sub) {
+    size_t len = strlen(sub);
+    if (len > 0) {
+        char *p = str;
+        while ((p = strstr(p, sub)) != NULL) {
+            memmove(p, p + len, strlen(p + len) + 1);
+        }
+    }
+    return str;
+}
+
 int main(int argc, char *argv[])
 {
 	clock_t start, end;
@@ -22,7 +33,7 @@ int main(int argc, char *argv[])
     char working_path[MAX_BUF];
     char tmp[MAX_BUF] = "\"";
     int x = 0, len, j;
-    
+    char flag_e[MAX_BUF];
     printf("crex ver0.2 - Resampler Extended Rewrite in C.\n");
     printf("Copyright ookamitai, 2022. All rights reserved.\n");
     strcpy(working_path, argv[0]);
@@ -64,15 +75,10 @@ int main(int argc, char *argv[])
 	strcat(tmp, "\"");
 	strcpy(argv[2], tmp);
     
-    for(i = 1; i < argc; i++)
-    {
-        strcat(com_args, " ");
-        strcat(com_args, argv[i]);
-    }
-    
     //printf("parser> Arguments are%s\n", com_args);
     
     strcpy(flag, argv[5]);
+	strcpy(flag_e, flag);
     //printf("parser> Flag is %s.\n", flag);
 	len = strlen(flag);
 	   	
@@ -132,6 +138,18 @@ int main(int argc, char *argv[])
 		}	
 	}
 	
+	for(i = 1; i < argc; i++)
+    {
+    	strcat(com_args, " ");
+    	if (i == 5){
+    		strcat(com_args, strremove(flag, resamp_id));
+    		printf("parser> SENT FLAG->%s\n", strremove(flag, resamp_id));
+		} else {
+			strcat(com_args, argv[i]);
+		}
+        
+        
+    }
     strcat(resamp_path, com_args);
     strcat(resamp_path, "> nul");
     //printf("main> Command to be excuted: %s\n", resamp_path);
